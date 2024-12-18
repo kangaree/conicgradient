@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conic Gradient</title>
+    <style>
+      @property --hours {
+        syntax: "<angle>";
+        initial-value: -45deg;
+        inherits: false;
+      }
+      @property --minutes {
+        syntax: "<angle>";
+        initial-value: 45deg;
+        inherits: false;
+      }
+      @property --seconds {
+        syntax: "<angle>";
+        initial-value: 180deg;
+        inherits: false;
+      }
+      :root {
+        --color--hours: rgba(110, 161, 255, 0.3);
+        --color--minutes: rgba(110, 161, 255, 0.3);
+        --color--seconds: rgba(110, 161, 255, 0.3);
+        --color--bg: rgba(50, 50, 200, 1);
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background: conic-gradient(
+            from var(--hours) at 50% 50%,
+            var(--color--hours),
+            transparent
+          ),
+          conic-gradient(
+            from var(--minutes) at 50% 50%,
+            var(--color--minutes),
+            transparent
+          ),
+          conic-gradient(
+            from var(--seconds) at 50% 50%,
+            var(--color--seconds),
+            transparent
+          ),
+          var(--color--bg);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function updateClock() {
+        const now = new Date();
+
+        const hours =
+          ((now.getHours() % 12) / 12) * 360 + (now.getMinutes() / 60) * 30;
+        const minutes =
+          (now.getMinutes() / 60) * 360 + (now.getSeconds() / 60) * 6;
+        const seconds =
+          (now.getSeconds() / 60) * 360 + (now.getMilliseconds() / 1000) * 6;
+
+        document.body.style.setProperty("--hours", `${hours}deg`);
+        document.body.style.setProperty("--minutes", `${minutes}deg`);
+        document.body.style.setProperty("--seconds", `${seconds}deg`);
+
+        requestAnimationFrame(updateClock);
+      }
+
+      requestAnimationFrame(updateClock);
+    </script>
+  </body>
+</html>
